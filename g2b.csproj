@@ -59,6 +59,7 @@
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomAccountGen\CampaignGen.cs" />
     <Compile Include="Runner.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -34,19 +34,13 @@ namespace g2b
             new Lazy<ServiceClient<ICampaignManagementService>>(
                 () => new ServiceClient<ICampaignManagementService>(Auth.Value));
 
-        public static void GetCampaigns()
+        public static IList<Campaign> GetCampaigns()
         {
-            var res=CampaignService.Value.CallAsync((s, r) => s.GetCampaignsByAccountIdAsync(r),
+            return CampaignService.Value.CallAsync((s, r) => s.GetCampaignsByAccountIdAsync(r),
                 new GetCampaignsByAccountIdRequest
                 {
                     AccountId = _accountId,
-                    
-                }).Result;
-            foreach (var campaign in res.Campaigns)
-            {
-                Console.Out.WriteLine(campaign.Id);
-                Console.Out.WriteLine(campaign.Name);
-            }
+                }).Result.Campaigns;
         }
     }
 }
