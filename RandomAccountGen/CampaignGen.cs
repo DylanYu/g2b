@@ -6,20 +6,30 @@ using System.Threading.Tasks;
 
 namespace g2b.RandomAccountGen
 {
+    using Common;
     using Google.Api.Ads.AdWords.v201509;
 
     public class CampaignGen
     {
-        private const int AddCount = 3;
-        private const int DeleteCount = 0;
-        private const int UpdateCount = 0;
+        private const int AddCount = 2;
+        private const int DeleteCount = 1;
+        private const int UpdateCount = 1;
+        private const int ReturnAddCount = 1;
+        private const int ReturnUpdateCount = 1;
+        private const int ReturnOldCount = 1;
 
-        public static void Gen()
+        public static IList<Campaign> Gen()
         {
+            var ret = new List<Campaign>();
             var existingCampaings = AdWords.GetCampaigns();
-            var ls = existingCampaings.Where(c => c.status != CampaignStatus.REMOVED).OrderBy(c => c.GetHashCode());
+            var ls =
+                existingCampaings.OrEmpty()
+                    .Where(c => c != null && c.status != CampaignStatus.REMOVED)
+                    .OrderBy(c => c.GetHashCode())
+                    .ToList();
             var toDelete = ls.Take(DeleteCount).ToList();
-            var toUpdate = ls.Take(UpdateCount).ToList();
+            var toUpdate = ls.Skip(DeleteCount).Take(UpdateCount).ToList();
+            ls.Skip(DeleteCount+UpdateCount).Take(ReturnOldCount).Each(c => ret.Add(c));
             if (toDelete.Any())
             {
                 var deleteRes = AdWords.SetCampaigns(toDelete.Select(c =>
@@ -29,11 +39,10 @@ namespace g2b.RandomAccountGen
                     c.statusSpecified = true;
                     return c;
                 }));
-                if (deleteRes.partialFailureErrors != null)
-                    foreach (var e in deleteRes.partialFailureErrors)
-                    {
-                        Console.Out.WriteLine("delete campaign error:{0}", e.errorString);
-                    }
+                foreach (var e in deleteRes.partialFailureErrors.OrEmpty())
+                {
+                    Console.Out.WriteLine("delete campaign error:{0}", e.errorString);
+                }
             }
             if (toUpdate.Any())
             {
@@ -48,26 +57,27 @@ namespace g2b.RandomAccountGen
                         c.budget.amount.microAmount);
                     return c;
                 }));
-                if (updateRes.partialFailureErrors != null)
-                    foreach (var e in updateRes.partialFailureErrors)
-                    {
-                        Console.Out.WriteLine("update campaign error:{0}", e.errorString);
-                    }
+                foreach (var e in updateRes.partialFailureErrors.OrEmpty())
+                {
+                    Console.Out.WriteLine("update campaign error:{0}", e.errorString);
+                }
+                updateRes.value.Take(ReturnUpdateCount).Each(c => ret.Add(c));
             }
             var toAdd = Enumerable.Range(0, AddCount).Select(CreateRandom).ToList();
             if (toAdd.Any())
             {
                 var addRes = AdWords.AddCampaigns(toAdd);
-                if (addRes.partialFailureErrors != null)
-                    foreach (var e in addRes.partialFailureErrors)
-                    {
-                        Console.Out.WriteLine("add campaign error:{0}", e.errorString);
-                    }
+                foreach (var e in addRes.partialFailureErrors.OrEmpty())
+                {
+                    Console.Out.WriteLine("add campaign error:{0}", e.errorString);
+                }
                 foreach (var campaign in addRes.value)
                 {
                     Console.Out.WriteLine("added campaign id:{0},name:{1}", campaign.id, campaign.name);
                 }
+                addRes.value.Take(ReturnAddCount).Each(c => ret.Add(c));
             }
+            return ret;
         }
 
         static Campaign CreateRandom(int i)

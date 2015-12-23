@@ -2,6 +2,7 @@
 
 namespace g2b
 {
+    using RandomAccountGen;
 
     class Runner
     {
@@ -30,7 +31,16 @@ namespace g2b
 
         static void Gen()
         {
-            RandomAccountGen.CampaignGen.Gen();
+            var cs=CampaignGen.Gen();
+            foreach (var campaign in cs)
+            {
+                Console.Out.WriteLine("selected campaign {0}", campaign.name);
+            }
+            var ags=AdGroupGen.Gen(cs);
+            foreach (var adGroup in ags)
+            {
+                Console.Out.WriteLine("selected ad group {0} under {1}", adGroup.name, adGroup.campaignName);
+            }
         }
 
         static void Smoke()

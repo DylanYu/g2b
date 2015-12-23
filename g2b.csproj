@@ -54,11 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdWords.cs" />
+    <Compile Include="AdWords\AdGroup.cs" />
+    <Compile Include="AdWords\User.cs" />
+    <Compile Include="AdWords\Campaign.cs" />
     <Compile Include="BingAds.cs" />
+    <Compile Include="Common\Util.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomAccountGen\AdGroupGen.cs" />
     <Compile Include="RandomAccountGen\CampaignGen.cs" />
     <Compile Include="Runner.cs" />
   </ItemGroup>
