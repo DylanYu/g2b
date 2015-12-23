@@ -83,7 +83,7 @@ namespace g2b.RandomAccountGen
         static Campaign CreateRandom(int i)
         {
             Campaign campaign = new Campaign();
-            campaign.name = "My first campaign "+i+"_"+Guid.NewGuid();
+            campaign.name = "C"+i+"_"+Guid.NewGuid();
             campaign.status = CampaignStatus.PAUSED;
             campaign.advertisingChannelType = AdvertisingChannelType.SEARCH;
 

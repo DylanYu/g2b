@@ -95,6 +95,11 @@ namespace g2b.RandomAccountGen
             var parent = cs[i];
             ret.campaignId = parent.id;
             ret.name = "AG" + i + "_" + Guid.NewGuid();
+            ret.status=AdGroupStatus.PAUSED;
+            ret.biddingStrategyConfiguration = new BiddingStrategyConfiguration
+            {
+                bids = new Bids[] {new CpcBid {bid = new Money {microAmount = 32000000}}}
+            };
             return ret;
         }
     }

@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdWords\AdGroup.cs" />
+    <Compile Include="AdWords\Keyword.cs" />
     <Compile Include="AdWords\User.cs" />
     <Compile Include="AdWords\Campaign.cs" />
     <Compile Include="BingAds.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomAccountGen\AdGroupGen.cs" />
     <Compile Include="RandomAccountGen\CampaignGen.cs" />
+    <Compile Include="RandomAccountGen\KeywordGen.cs" />
     <Compile Include="Runner.cs" />
   </ItemGroup>
   <ItemGroup>
