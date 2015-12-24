@@ -42,5 +42,15 @@ namespace g2b
                     AccountId = _accountId,
                 }).Result.Campaigns;
         }
+
+        public static IEnumerable<AdGroup> GetAdGroups(IEnumerable<long> cids)
+        {
+            return cids.SelectMany(cid =>
+                CampaignService.Value.CallAsync((s, r) => s.GetAdGroupsByCampaignIdAsync(r),
+                    new GetAdGroupsByCampaignIdRequest
+                    {
+                        CampaignId = cid
+                    }).Result.AdGroups);
+        } 
     }
 }

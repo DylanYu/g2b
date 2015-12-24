@@ -71,7 +71,11 @@ namespace g2b
         static void Init()
         {
             var cmap = IdMap.CampaignMap.Build();
-            //build child
+            foreach (var ckv in cmap)
+            {
+                var agmap = IdMap.AdGroupMap.Build(ckv.Key, ckv.Value);
+                //ag child
+            }
         }
 
         static void Sync()

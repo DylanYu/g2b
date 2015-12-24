@@ -59,6 +59,7 @@
     <Compile Include="AdWords\User.cs" />
     <Compile Include="AdWords\Campaign.cs" />
     <Compile Include="BingAds.cs" />
+    <Compile Include="IdMap\AdGroupMap.cs" />
     <Compile Include="IdMap\CampaignMap.cs" />
     <Compile Include="Common\LastSync.cs" />
     <Compile Include="Common\Util.cs" />

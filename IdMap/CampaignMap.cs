@@ -9,10 +9,15 @@ namespace g2b.IdMap
     using System.IO;
     using System.Threading;
     using Common;
+    using Google.Api.Ads.AdWords.v201509;
 
-    public class CampaignMap
+
+    public class MapBase
     {
-        private const string Root = "data";
+        protected const string Root = "data";
+    }
+    public class CampaignMap : MapBase
+    {
         private const string Fp = @"campaign.map";
         private const string StatFp = @"campaign.stat";
         public static IDictionary<long, long> Build()
@@ -25,7 +30,7 @@ namespace g2b.IdMap
             Directory.CreateDirectory(Root);
             Thread.Sleep(TimeSpan.FromSeconds(1));
             Console.Out.WriteLine("build campaign map");
-            var acs = AdWords.GetCampaigns();//assume no duplicate id
+            var acs = AdWords.GetCampaigns().Where(c=>c.status!=CampaignStatus.REMOVED).ToList();//assume no duplicate id
             Console.Out.WriteLine("get adwords campaigns {0}", acs.Count());
             var bcs = BingAds.GetCampaigns().Where(c=>c.Id.HasValue).ToList();
             Console.Out.WriteLine("get bingads campaigns {0}", bcs.Count);
