@@ -74,7 +74,10 @@ namespace g2b
             foreach (var ckv in cmap)
             {
                 var agmap = IdMap.AdGroupMap.Build(ckv.Key, ckv.Value);
-                //ag child
+                foreach (var agkv in agmap)
+                {
+                    IdMap.KeywordMap.Build(ckv.Key, agkv.Key, ckv.Value, agkv.Value);
+                }
             }
         }
 

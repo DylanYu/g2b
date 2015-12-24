@@ -63,6 +63,7 @@
     <Compile Include="IdMap\CampaignMap.cs" />
     <Compile Include="Common\LastSync.cs" />
     <Compile Include="Common\Util.cs" />
+    <Compile Include="IdMap\KeywordMap.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -51,6 +51,16 @@ namespace g2b
                     {
                         CampaignId = cid
                     }).Result.AdGroups);
+        }
+
+        public static IEnumerable<Keyword> GetKeywords(IEnumerable<long> agids)
+        {
+            return agids.SelectMany(cid =>
+                CampaignService.Value.CallAsync((s, r) => s.GetKeywordsByAdGroupIdAsync(r),
+                    new GetKeywordsByAdGroupIdRequest
+                    {
+                        AdGroupId = cid,
+                    }).Result.Keywords);
         } 
     }
 }

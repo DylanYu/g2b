@@ -30,7 +30,7 @@ namespace g2b.IdMap
             Directory.CreateDirectory(Root);
             Thread.Sleep(TimeSpan.FromSeconds(1));
             Console.Out.WriteLine("build campaign map");
-            var acs = AdWords.GetCampaigns().Where(c=>c.status!=CampaignStatus.REMOVED).ToList();//assume no duplicate id
+            var acs = AdWords.GetCampaigns().OrEmpty().Where(c=>c.status!=CampaignStatus.REMOVED).ToList();//assume no duplicate id
             Console.Out.WriteLine("get adwords campaigns {0}", acs.Count());
             var bcs = BingAds.GetCampaigns().Where(c=>c.Id.HasValue).ToList();
             Console.Out.WriteLine("get bingads campaigns {0}", bcs.Count);
