@@ -21,6 +21,12 @@ namespace g2b
                 case "smoke":
                     Smoke();
                     break;
+                case "init":
+                    Init();
+                    break;
+                case "sync":
+                    Sync();
+                    break;
             }
             if (args.Length == 1)
             {
@@ -60,6 +66,17 @@ namespace g2b
             {
                 Console.Out.WriteLine("id:{0} name:{1}", campaign.id, campaign.name);
             }
+        }
+
+        static void Init()
+        {
+            var cmap = IdMap.CampaignMap.Build();
+            //build child
+        }
+
+        static void Sync()
+        {
+            
         }
     }
 }
