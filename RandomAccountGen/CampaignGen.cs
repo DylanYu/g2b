@@ -27,6 +27,7 @@ namespace g2b.RandomAccountGen
                     .Where(c => c != null && c.status != CampaignStatus.REMOVED)
                     .OrderBy(c => c.GetHashCode())
                     .ToList();
+            Console.Out.WriteLine("get campaigns {0}", ls.Count);
             var toDelete = ls.Take(DeleteCount).ToList();
             var toUpdate = ls.Skip(DeleteCount).Take(UpdateCount).ToList();
             ls.Skip(DeleteCount+UpdateCount).Take(ReturnOldCount).Each(c => ret.Add(c));
@@ -84,7 +85,6 @@ namespace g2b.RandomAccountGen
         {
             Campaign campaign = new Campaign();
             campaign.name = "C"+i+"_"+Guid.NewGuid();
-            campaign.status = CampaignStatus.PAUSED;
             campaign.advertisingChannelType = AdvertisingChannelType.SEARCH;
 
             BiddingStrategyConfiguration biddingConfig = new BiddingStrategyConfiguration();

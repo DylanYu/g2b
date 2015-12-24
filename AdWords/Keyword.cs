@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace g2b
 {
+    using Common;
     using Google.Api.Ads.AdWords.Lib;
     using Google.Api.Ads.AdWords.v201509;
 
@@ -22,7 +23,7 @@ namespace g2b
         }
         private static readonly Lazy<AdGroupCriterionService> KeywordService =
             new Lazy<AdGroupCriterionService>(
-                () => (AdGroupCriterionService)User.Value.GetService(AdWordsService.v201509.CampaignService));
+                () => (AdGroupCriterionService)User.Value.GetService(AdWordsService.v201509.AdGroupCriterionService));
 
         //ad group id lost in Keyword
         public static IEnumerable<Listing> GetKeywords(IEnumerable<long> agids)
@@ -44,7 +45,7 @@ namespace g2b
                     }
             };
             return
-                from c in KeywordService.Value.get(sel0).entries
+                from c in KeywordService.Value.get(sel0).entries.OrEmpty()
                 let ac = c as BiddableAdGroupCriterion
                 where ac != null
                 let k = c.criterion as Keyword
@@ -52,7 +53,7 @@ namespace g2b
                 select new Listing {Ac = ac};
         }
 
-        public static AdGroupCriterionReturnValue SetKeywords(IEnumerable<Listing> cs)
+        public static AdGroupCriterionReturnValue SetKeywords(IEnumerable<Listing> cs, bool isDelete = false)
         {
             return KeywordService.Value.mutate(
                 cs.Select(
@@ -60,16 +61,16 @@ namespace g2b
                         new AdGroupCriterionOperation
                         {
                             operand = c.Ac,
-                            @operator = Operator.SET
+                            @operator = isDelete ? Operator.REMOVE : Operator.SET
                         }).ToArray());
         }
 
-        public static AdGroupCriterionReturnValue AddKeywords(IList<Listing> cs)
+        public static AdGroupCriterionReturnValue AddKeywords(IEnumerable<BiddableAdGroupCriterion> cs)
         {
             return KeywordService.Value.mutate(
                 cs.Select(c => new AdGroupCriterionOperation
                 {
-                    operand = c.Ac,
+                    operand = c,
                     @operator = Operator.ADD
                 }).ToArray());
         }

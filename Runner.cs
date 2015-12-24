@@ -41,6 +41,7 @@ namespace g2b
             {
                 Console.Out.WriteLine("selected ad group {0} under {1}", adGroup.name, adGroup.campaignName);
             }
+            KeywordGen.Gen(ags);
         }
 
         static void Smoke()

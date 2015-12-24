@@ -27,7 +27,8 @@ namespace g2b.RandomAccountGen
                 AdWords.GetAdGroups(cids)
                     .OrEmpty()
                     .Where(a => a != null && a.status != AdGroupStatus.REMOVED)
-                    .OrderBy(ag => ag.GetHashCode());
+                    .OrderBy(ag => ag.GetHashCode()).ToList();
+            Console.Out.WriteLine("get ad groups {0}", existingAgs.Count);
             var toDelete = existingAgs.Take(DeleteCount).ToList();
             var toUpdate = existingAgs.Skip(DeleteCount).Take(UpdateCount).ToList();
             existingAgs.Skip(DeleteCount+UpdateCount).Take(ReturnOldCount).Each(a=>ret.Add(a));
