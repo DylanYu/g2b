@@ -2,7 +2,9 @@
 
 namespace g2b
 {
+    using Common;
     using RandomAccountGen;
+    using Sync;
 
     class Runner
     {
@@ -10,7 +12,7 @@ namespace g2b
         {
             if (args.Length == 0)
             {
-                Console.Out.WriteLine("support commands: gen | smoke | init | sync");
+                Console.Out.WriteLine("support commands: gen | smoke | init | touch | sync");
                 return;
             }
             switch (args[0])
@@ -23,6 +25,9 @@ namespace g2b
                     break;
                 case "init":
                     Init();
+                    break;
+                case "touch":
+                    Touch();
                     break;
                 case "sync":
                     Sync();
@@ -37,6 +42,7 @@ namespace g2b
 
         static void Gen()
         {
+            Console.Out.WriteLine(DateTime.UtcNow);
             var cs=CampaignGen.Gen();
             foreach (var campaign in cs)
             {
@@ -48,6 +54,7 @@ namespace g2b
                 Console.Out.WriteLine("selected ad group {0} under {1}", adGroup.name, adGroup.campaignName);
             }
             KeywordGen.Gen(ags);
+            Console.Out.WriteLine(DateTime.UtcNow);
         }
 
         static void Smoke()
@@ -81,9 +88,30 @@ namespace g2b
             }
         }
 
+        static void Touch()
+        {
+            var acs = AdWords.GetCampaigns();
+            var startTime = DateTime.UtcNow.AddDays(-1);
+            var delta = AdWords.GetSyncData(LastSync.Format(startTime), acs);
+            if (delta.lastChangeTimestamp != null)
+                LastSync.Set(delta.lastChangeTimestamp);
+            else
+                Console.Out.WriteLine("touch again.");
+        }
+
         static void Sync()
         {
-            
+            //Console.Out.WriteLine(DateTime.Now.ToString(LastSync.DateTimeFormat));
+            //Console.Out.WriteLine(DateTime.UtcNow.ToString(LastSync.DateTimeFormatShort));
+            //Console.ReadLine();
+            //return;
+            var t = LastSync.Get();
+            if (t == null)
+            {
+                Console.Out.WriteLine("you must touch first!");
+                return;
+            }
+            CampaignSync.Sync(t);
         }
     }
 }

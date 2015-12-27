@@ -71,6 +71,7 @@
     <Compile Include="RandomAccountGen\CampaignGen.cs" />
     <Compile Include="RandomAccountGen\KeywordGen.cs" />
     <Compile Include="Runner.cs" />
+    <Compile Include="Sync\CampaignSync.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
