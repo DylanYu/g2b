@@ -71,7 +71,10 @@
     <Compile Include="RandomAccountGen\CampaignGen.cs" />
     <Compile Include="RandomAccountGen\KeywordGen.cs" />
     <Compile Include="Runner.cs" />
+    <Compile Include="Sync\AdGroupSync.cs" />
     <Compile Include="Sync\CampaignSync.cs" />
+    <Compile Include="Sync\KeywordSync.cs" />
+    <Compile Include="Transform\KeywordTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

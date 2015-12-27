@@ -61,6 +61,45 @@ namespace g2b
                     {
                         AdGroupId = cid,
                     }).Result.Keywords);
-        } 
+        }
+
+        public static IList<Keyword> GetKeywords(long agid, IList<long> kwids)
+        {
+            return CampaignService.Value.CallAsync((s, r) => s.GetKeywordsByIdsAsync(r),
+                new GetKeywordsByIdsRequest
+                {
+                    AdGroupId = agid,
+                    KeywordIds = kwids,
+                }).Result.Keywords;
+        }
+
+        public static DeleteKeywordsResponse DeleteKeywords(long agid, IList<long> kwids)
+        {
+            return CampaignService.Value.CallAsync((s, r) => s.DeleteKeywordsAsync(r), new DeleteKeywordsRequest
+            {
+                AdGroupId = agid,
+                KeywordIds = kwids
+            }).Result;
+        }
+
+        public static UpdateKeywordsResponse UpdateKeywords(long agid, IList<Keyword> kws)
+        {
+            return CampaignService.Value.CallAsync((s, r) => s.UpdateKeywordsAsync(r), new UpdateKeywordsRequest
+            {
+                AdGroupId = agid,
+                Keywords = kws
+            }).Result;
+        }
+
+        public static AddKeywordsResponse AddKeywords(long agid, IList<Keyword> kws)
+        {
+            return CampaignService.Value.CallAsync((s, r) => s.AddKeywordsAsync(r), new AddKeywordsRequest
+            {
+                AdGroupId = agid,
+                Keywords = kws
+            }).Result;
+        }
+
+
     }
 }

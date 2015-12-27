@@ -13,24 +13,14 @@ namespace g2b.IdMap
 
     public class KeywordMap:MapBase
     {
-
-        private static KeywordMatchType MapMatchType(MatchType mt)
-        {
-            switch (mt)
-            {
-                case MatchType.Exact:
-                    return KeywordMatchType.EXACT;
-                case MatchType.Phrase:
-                    return KeywordMatchType.PHRASE;
-                case MatchType.Broad:
-                    return KeywordMatchType.BROAD;
-            }
-            throw new Exception(mt.ToString());
-        }
-
-
         private const string Fp = @"keyword.map";
         private const string StatFp = @"keyword.stat";
+
+        public static string GetPath(long acid, long aagid)
+        {
+            return Path.Combine(Root, acid.ToString(), aagid.ToString(), Fp);
+        }
+
         public static void Build(long acid, long aagid, long bcid, long bagid)
         {
             var root = Path.Combine(Root, acid.ToString(), aagid.ToString());
@@ -49,7 +39,7 @@ namespace g2b.IdMap
             var bmapped = new HashSet<long>();
             var bindex =
                 bkws.ToDictionaryDuplicateKeyOverride(
-                    c => Tuple.Create(c.Text.ToLowerInvariant(), MapMatchType(c.MatchType.Value)), c => c);
+                    c => Tuple.Create(c.Text.ToLowerInvariant(), Transform.KeywordTransform.MapMatchType(c.MatchType.Value)), c => c);
             var map = new Dictionary<long, long>();
             foreach (var ac in akws)
             {

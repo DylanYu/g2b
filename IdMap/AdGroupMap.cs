@@ -16,6 +16,11 @@ namespace g2b.IdMap
         private const string Fp = @"adgroup.map";
         private const string StatFp = @"adgroup.stat";
 
+        public static string GetPath(long acid)
+        {
+            return Path.Combine(Root, acid.ToString(), Fp);
+        }
+
         public static IDictionary<long, long> Build(long acid, long bcid)
         {
             var root = Path.Combine(Root, acid.ToString());
